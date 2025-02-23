@@ -20,7 +20,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ enum: Role, default: Role.Regular })
@@ -32,7 +32,13 @@ export class User {
   @Column({ enum: Permission, default: [], type: 'json' })
   permissions: PermissionType[];
 
-  @JoinTable() // 👈
+  @JoinTable()
   @OneToMany((type) => ApiKey, (apiKey) => apiKey.user)
   apiKeys: ApiKey[];
+
+  @Column({ default: false })
+  isTfaEnabled: boolean;
+
+  @Column({ nullable: true })
+  tfaSecret: string;
 }
